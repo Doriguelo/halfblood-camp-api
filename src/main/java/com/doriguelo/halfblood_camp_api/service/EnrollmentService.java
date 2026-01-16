@@ -16,6 +16,14 @@ public class EnrollmentService {
     private CabinRepository cabinRepository;
 
     public Demigod enrollACamper(Demigod demigod) {
+
+        if(demigod.getDivineRelative() == null || demigod.getDivineRelative().isEmpty()) {
+            demigod.setDivineRelative("Undetermined");
+            demigod.setClaimed(false);
+        } else {
+            demigod.setClaimed(true);
+        }
+
         if(List.of("Zeus", "Poseidon", "Hades").contains(demigod.getDivineRelative())) {
             demigod.setDangerousLevel("HIGH - Continuously Monitor");
         } else {
@@ -24,15 +32,12 @@ public class EnrollmentService {
 
         Cabin destinationCabin;
 
-        if(demigod.getDivineRelative() == null || demigod.getDivineRelative().isEmpty()) {
+        if(demigod.getDivineRelative().equals("Undetermined")) {
             destinationCabin = cabinRepository.findById(11)
                     .orElseThrow(() -> new RuntimeException("Hermes cabin not found!"));
-            demigod.setClaimed(false);
-            demigod.setDivineRelative("Undetermined");
         } else {
             destinationCabin = cabinRepository.findByGod(demigod.getDivineRelative())
                     .orElseThrow(() -> new RuntimeException("We haven't built a cabin for " + demigod.getDivineRelative() + " yet."));
-            demigod.setClaimed(true);
         }
 
         if(destinationCabin.getNumber() == 8 && !"F".equalsIgnoreCase(demigod.getGenre())) {
