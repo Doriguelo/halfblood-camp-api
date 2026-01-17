@@ -36,7 +36,7 @@ public class EnrollmentService {
             destinationCabin = cabinRepository.findById(11)
                     .orElseThrow(() -> new RuntimeException("Hermes cabin not found!"));
         } else {
-            destinationCabin = cabinRepository.findByGod(demigod.getDivineRelative())
+            destinationCabin = cabinRepository.findByGodIgnoreCase(demigod.getDivineRelative())
                     .orElseThrow(() -> new RuntimeException("We haven't built a cabin for " + demigod.getDivineRelative() + " yet."));
         }
 
