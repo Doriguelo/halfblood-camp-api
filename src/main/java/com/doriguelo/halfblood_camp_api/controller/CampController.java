@@ -33,7 +33,7 @@ public class CampController {
     @GetMapping("/{id}")
     public ResponseEntity<?> searchCamper(@PathVariable Long id) {
         try {
-            return ResponseEntity.ok(service.serachById(id));
+            return ResponseEntity.ok(service.searchById(id));
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
@@ -52,5 +52,14 @@ public class CampController {
     @GetMapping
     public ResponseEntity<?> listAll() {
         return ResponseEntity.ok(service.searchAll());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateCamper(@PathVariable Long id, @RequestBody Demigod demigod) {
+        try {
+            return ResponseEntity.ok(service.updateData(id, demigod));
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

@@ -26,6 +26,13 @@ public class MissionService {
         for(Demigod d : missionRequest.getGroup()) {
             Demigod existing = demigodRepository.findById(d.getId())
                     .orElseThrow(() -> new RuntimeException("Demigod with ID " + + d.getId() + " not found!"));
+            boolean isBusy = existing.getMissions().stream()
+                            .anyMatch(m -> !m.isComplete());
+
+            if(isBusy) {
+                throw new RuntimeException("ERROR: Camper " + existing.getName() + " is already on a Quest! Finish the previous one first.");
+            }
+
             confirmedGroup.add(existing);
         }
 

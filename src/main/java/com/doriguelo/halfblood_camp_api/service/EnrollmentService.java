@@ -16,6 +16,13 @@ public class EnrollmentService {
     private CabinRepository cabinRepository;
 
     public Demigod enrollACamper(Demigod demigod) {
+        if (demigod.getAge() < 0 || demigod.getAge() > 100) {
+            throw new RuntimeException("Invalid age for a Demigod.");
+        }
+
+        if(demigod.getName() == null || demigod.getName().isBlank()) {
+            throw new RuntimeException("Every Demigod needs a name.");
+        }
 
         if(demigod.getDivineRelative() == null || demigod.getDivineRelative().isEmpty()) {
             demigod.setDivineRelative("Undetermined");
@@ -63,7 +70,7 @@ public class EnrollmentService {
         return enrollACamper(d);
     }
 
-    public Demigod serachById(Long id) {
+    public Demigod searchById(Long id) {
         return demigodRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Camper with ID " + id + " not found. Maybe it turned into a star?"));
     }
@@ -78,5 +85,15 @@ public class EnrollmentService {
 
     public List<Demigod> searchAll() {
         return demigodRepository.findAll();
+    }
+
+    public Demigod updateData(Long id, Demigod newData) {
+        Demigod existing = searchById(id);
+
+        existing.setName(newData.getName());
+        existing.setAge(newData.getAge());
+        existing.setGenre(newData.getGenre());
+
+        return demigodRepository.save(existing);
     }
 }
