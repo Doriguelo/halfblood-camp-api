@@ -15,9 +15,15 @@ public class MonitoringService {
     @Scheduled(fixedRate = 20000)
     public void verifyFulfillmentOfThePromise() {
         List<Demigod> demigods = repository.findAll();
-        boolean brokenPact = false;
 
         System.out.println("\n[SYSTEM] Verifying Oath on the River Styx...");
+
+        if(demigods.isEmpty()) {
+            System.out.println("Status: The camp is empty. The cleaning harpies are asleep.");
+            return;
+        }
+
+        boolean brokenPact = false;
 
         for(Demigod d : demigods) {
            if(d.getAge() >= 13 && !d.isClaimed()) {

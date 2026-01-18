@@ -16,7 +16,7 @@ public class EnrollmentService {
     private CabinRepository cabinRepository;
 
     public Demigod enrollACamper(Demigod demigod) {
-        if (demigod.getAge() < 0 || demigod.getAge() > 100) {
+        if (demigod.getAge() <= 0 || demigod.getAge() >= 100) {
             throw new RuntimeException("Invalid age for a Demigod.");
         }
 
