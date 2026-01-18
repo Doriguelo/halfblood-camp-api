@@ -29,4 +29,13 @@ public class MissionController {
     public ResponseEntity<?> listMissions() {
         return ResponseEntity.ok(repository.findAll());
     }
+
+    @PutMapping("/{id}/complete")
+    public ResponseEntity<?> completeMission(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(service.completeMission(id));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }

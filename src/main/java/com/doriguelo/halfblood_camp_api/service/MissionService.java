@@ -34,4 +34,12 @@ public class MissionService {
 
         return missionRepository.save(missionRequest);
     }
+
+    public Mission completeMission(Long missionId) {
+        Mission mission = missionRepository.findById(missionId)
+                .orElseThrow(() -> new RuntimeException("Mission not found!"));
+        mission.setComplete(true);
+
+        return missionRepository.save(mission);
+    }
 }
