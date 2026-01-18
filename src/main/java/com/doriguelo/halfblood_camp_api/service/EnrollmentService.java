@@ -62,4 +62,21 @@ public class EnrollmentService {
         d.setDivineRelative(godName);
         return enrollACamper(d);
     }
+
+    public Demigod serachById(Long id) {
+        return demigodRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Camper with ID " + id + " not found. Maybe it turned into a star?"));
+    }
+
+    public void expelOrBury(Long id) {
+        if(demigodRepository.existsById(id)) {
+            demigodRepository.deleteById(id);
+        } else {
+            throw new RuntimeException("Camper not found for removal.");
+        }
+    }
+
+    public List<Demigod> searchAll() {
+        return demigodRepository.findAll();
+    }
 }

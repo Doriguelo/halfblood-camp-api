@@ -29,4 +29,28 @@ public class CampController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> searchCamper(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(service.serachById(id));
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteCamper(@PathVariable Long id) {
+        try {
+            service.expelOrBury(id);
+            return ResponseEntity.noContent().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity<?> listAll() {
+        return ResponseEntity.ok(service.searchAll());
+    }
 }
