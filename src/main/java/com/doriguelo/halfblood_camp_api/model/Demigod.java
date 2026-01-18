@@ -21,4 +21,8 @@ public class Demigod {
     @ManyToOne
     @JoinColumn(name = "cabin_number")
     private Cabin cabin;
+
+    @ManyToMany(mappedBy = "group")
+    @com.fasterxml.jackson.annotation.JsonIgnoreProperties("group")
+    private java.util.List<Mission> missions;
 }
