@@ -42,4 +42,12 @@ public class MissionService {
 
         return missionRepository.save(mission);
     }
+
+    public void cancelMission(Long id) {
+        if(missionRepository.existsById(id)) {
+            missionRepository.deleteById(id);
+        } else {
+            throw new RuntimeException("Mission not found to cancel.");
+        }
+    }
 }
