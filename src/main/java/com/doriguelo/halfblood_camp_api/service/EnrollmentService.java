@@ -76,11 +76,16 @@ public class EnrollmentService {
     }
 
     public void expelOrBury(Long id) {
-        if(demigodRepository.existsById(id)) {
-            demigodRepository.deleteById(id);
-        } else {
-            throw new RuntimeException("Camper not found for removal.");
+        Demigod camper = searchById(id);
+
+        boolean onQuest = camper.getMissions().stream()
+                .anyMatch(m -> !m.isComplete());
+
+        if (onQuest) {
+            throw new RuntimeException("ACTION DENIED: Camper " + camper.getName() + " is on a Quest! Cancel the Quest or wait for the return.");
         }
+
+        demigodRepository.deleteById(id);
     }
 
     public List<Demigod> searchAll() {

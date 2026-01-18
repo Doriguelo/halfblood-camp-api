@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 public class CampController {
     @Autowired
     private EnrollmentService service;
+
     @PostMapping("/enter")
     public ResponseEntity<?> register(@RequestBody Demigod demigod) {
         try {
@@ -45,6 +46,10 @@ public class CampController {
             service.expelOrBury(id);
             return ResponseEntity.noContent().build();
         } catch (RuntimeException e) {
+            if (e.getMessage().contains("ACTION DENIED")) {
+                return ResponseEntity.badRequest().body(e.getMessage());
+            }
+
             return ResponseEntity.notFound().build();
         }
     }
