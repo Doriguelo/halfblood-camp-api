@@ -62,6 +62,21 @@ Uses **Spring Scheduler** to run background tasks:
 
 ## 📡 API Endpoints & Examples
 
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| **Campers (Semideuses)** | | |
+| `POST` | `/api/camp/enter` | Registers a new camper (Auto-sorting logic). |
+| `GET` | `/api/camp` | Lists all campers. |
+| `GET` | `/api/camp/{id}` | Retrieves details of a specific camper. |
+| `DELETE`| `/api/camp/{id}` | Expels a camper (Protected by Mission Lock). |
+| **Quests (Missões)** | | |
+| `POST` | `/api/missions` | Starts a new Quest (Requires 3 campers). |
+| `GET` | `/api/mission` | Lists all active and completed quests. |
+| `PUT` | `/api/missoes/{id}/complete` | Marks a quest as completed. |
+| `DELETE`| `/api/missions/{id}` | Cancels a quest. |
+| **Oracle** | | |
+| `GET` | `/api/oraculo/prophecy` | Consults the Oracle manually. |
+
 ### 1. Register a Camper (POST)
 **Route:** `/api/camp/enter`
 
@@ -115,6 +130,13 @@ Uses **Spring Scheduler** to run background tasks:
 
 ---
 
+## Data Integrity Protocols 🛡️
+The system protects the timeline and database consistency:
+* **Mission Lock:** You cannot delete/expel a camper if they are currently assigned to an active Quest. The system returns a `400 Bad Request` with a specific denial message.
+* **Empty State Handling:** Background jobs intelligently detect if the database is empty before running logic, preventing "false positives" in logs.
+
+---
+
 ## 📜 Database (H2 Console)
 Since this project uses H2 (In-Memory Database), you can inspect the tables directly in your browser while the app is running.
 
@@ -122,6 +144,18 @@ Since this project uses H2 (In-Memory Database), you can inspect the tables dire
 * JDBC URL: jdbc:h2:mem:campdb
 * User: sr_d
 * Password: wine
+
+---
+
+## ⚠️ Warning for Developers
+
+**Do not delete the `src/main/resources/application.properties` file.**
+If you do, the H2 Database configuration will be lost, and the campers will be lost in the Labyrinth (data persistence failure).
+
+**System Rules:**
+1.  A Quest **must** have exactly 3 members.
+2.  Camper age must be > 0.
+3.  Do not look directly at the Oracle output if you are not prepared for the truth.
 
 ---
 
